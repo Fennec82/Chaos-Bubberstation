@@ -39,7 +39,7 @@
 	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT + TESHARI_TEMP_OFFSET)
 	species_language_holder = /datum/language_holder/teshari
 	mutantears = /obj/item/organ/ears/teshari
-	body_size_restricted = TRUE
+	//body_size_restricted = TRUE
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/mutant/teshari,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/mutant/teshari,

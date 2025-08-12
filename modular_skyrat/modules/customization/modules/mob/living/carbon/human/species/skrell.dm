@@ -8,7 +8,7 @@
 		TRAIT_MUTANT_COLORS,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	exotic_blood = /datum/reagent/copper
+	exotic_bloodtype = BLOOD_TYPE_COPPER
 	bodytemp_normal = (BODYTEMP_NORMAL + 70)
 	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD
 	bodytemp_cold_damage_limit = (T20C - 10)
@@ -72,7 +72,7 @@
 	skrell.dna.features["mcolor"] = skrell_color
 	skrell.dna.features["mcolor2"] = skrell_color
 	skrell.dna.features["mcolor3"] = skrell_color
-	skrell.dna.mutant_bodyparts["skrell_hair"] = list(MUTANT_INDEX_NAME = "Female", MUTANT_INDEX_COLOR_LIST = list(skrell_color, skrell_color, skrell_color))
+	skrell.dna.mutant_bodyparts["skrell_hair"] = list(MUTANT_INDEX_NAME = "Female (Long)", MUTANT_INDEX_COLOR_LIST = list(skrell_color, skrell_color, skrell_color))
 	regenerate_organs(skrell, src, visual_only = TRUE)
 	skrell.update_body(TRUE)
 

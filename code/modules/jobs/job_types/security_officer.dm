@@ -44,7 +44,7 @@
 		JOB_SECURITY_OFFICER_SUPPLY,
 		JOB_SECURITY_OFFICER_SCIENCE,
 	)
-	job_flags = STATION_JOB_FLAGS
+	job_flags = STATION_JOB_FLAGS | JOB_ANTAG_PROTECTED
 
 
 GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, SEC_DEPT_SCIENCE, SEC_DEPT_SUPPLY))
@@ -129,7 +129,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	if(dep_trim)
 		var/obj/item/card/id/worn_id = spawning.get_idcard(hand_first = FALSE)
 		SSid_access.apply_trim_to_card(worn_id, dep_trim)
-		spawning.sec_hud_set_ID()
+		spawning.update_ID_card()
 
 		// Update PDA to match new trim.
 		var/obj/item/modular_computer/pda/pda = spawning.get_item_by_slot(ITEM_SLOT_BELT)
@@ -227,7 +227,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	id_trim = /datum/id_trim/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
 	suit = /obj/item/clothing/suit/armor/vest/alt/sec
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/energy/e_gun/advtaser //BUBBER EDIT CHANGE - Original: /obj/item/gun/energy/disabler
 	backpack_contents = list(
 		/obj/item/evidencebag = 1,
 		/obj/item/flashlight/seclite = 1, // BUBBER EDIT ADDITION

@@ -130,6 +130,9 @@ SUBSYSTEM_DEF(gamemode)
 	var/sec_crew = 0
 	var/med_crew = 0
 
+	//Security Based Antag Cap
+	var/sec_antag_cap = 0
+
 	/// Whether we looked up pop info in this process tick
 	var/pop_data_cached = FALSE
 
@@ -243,7 +246,7 @@ SUBSYSTEM_DEF(gamemode)
 		return 0
 	if(!storyteller.antag_divisor)
 		return 0
-	return round(max(min(get_correct_popcount() / storyteller.antag_divisor + sec_crew ,sec_crew * 1.5),ANTAG_CAP_FLAT))
+	return round(max(min(get_correct_popcount() / storyteller.antag_divisor + sec_antag_cap ,sec_antag_cap * 1.5),ANTAG_CAP_FLAT))
 
 /// Whether events can inject more antagonists into the round
 /datum/controller/subsystem/gamemode/proc/can_inject_antags()
@@ -416,6 +419,7 @@ SUBSYSTEM_DEF(gamemode)
 	eng_crew = 0
 	med_crew = 0
 	sec_crew = 0
+	sec_antag_cap = 0
 
 	for(var/mob/player_mob as anything in GLOB.alive_player_list)
 
@@ -452,6 +456,7 @@ SUBSYSTEM_DEF(gamemode)
 			med_crew++
 		if(player_role.departments_bitflags & DEPARTMENT_BITFLAG_SECURITY)
 			sec_crew++
+			sec_antag_cap += player_role.sec_antag_cap
 
 	pop_data_cached = TRUE
 
@@ -546,7 +551,7 @@ SUBSYSTEM_DEF(gamemode)
 /datum/controller/subsystem/gamemode/proc/post_setup(report) //Gamemodes can override the intercept report. Passing TRUE as the argument will force a report.
 	if(!report)
 		report = !CONFIG_GET(flag/no_intercept_report)
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/display_roundstart_logout_report), ROUNDSTART_LOGOUT_REPORT_TIME)
+	addtimer(CALLBACK(GLOBAL_PROC, .proc/display_roundstart_logout_report), 15 MINUTES)
 
 	if(SSdbcore.Connect())
 		var/list/to_set = list()
@@ -604,7 +609,7 @@ SUBSYSTEM_DEF(gamemode)
 
 		if(L.ckey && L.client)
 			var/failed = FALSE
-			if(L.client.inactivity >= (ROUNDSTART_LOGOUT_REPORT_TIME / 2)) //Connected, but inactive (alt+tabbed or something)
+			if(L.client.inactivity >= (15 MINUTES)) //Connected, but inactive (alt+tabbed or something)
 				msg += "<b>[L.name]</b> ([L.key]), the [L.job] (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n"
 				failed = TRUE //AFK client
 			if(!failed && L.stat)
@@ -787,7 +792,7 @@ SUBSYSTEM_DEF(gamemode)
 
 	log_dynamic("[players.len] players ready! Processing storyteller vote results.")
 
-	for(var/vote as anything in vote_datum.choices_by_ckey)
+	for(var/vote in vote_datum.choices_by_ckey)
 		if(!vote_datum.choices_by_ckey[vote])
 			continue
 		var/vote_string = "[vote]"
